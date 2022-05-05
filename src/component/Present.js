@@ -1,6 +1,7 @@
-import { Presentation, Slide, Text, Shape } from "react-pptx";
+import { Presentation, Slide, Text } from "react-pptx";
 import Preview from "react-pptx/preview";
-import React, { useRef, useState, useEffect, createRef } from "react";
+import React, { useRef, useState, useEffect, createRef, useCallback } from "react";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 export default function Present(props) {
   let data = JSON.parse(localStorage.getItem("present"));
@@ -8,7 +9,7 @@ export default function Present(props) {
   var k = 0;
   var slidearray = [];
 
-  const topic = useRef(null)
+  const topic = useRef(null)  
 
   const prevslide = async () => {
     if (k <= 0) {
@@ -26,7 +27,6 @@ export default function Present(props) {
   }
 
   const nextslide = () => {
-
     if (k >= slidearray.length) {
       return
     } else {
@@ -38,6 +38,19 @@ export default function Present(props) {
     }
   }
 
+  const Topage = (page) => {
+    if(page == "topic"){
+      window.scrollTo({
+      top: topic.current.offsetTop,
+    })
+    }else{
+      window.scrollTo({
+      top: temp[page].current.offsetTop,
+    })
+    }
+    
+  }
+
   const DFS = async (cur, Allnode, loc) => {
     if (cur.child.length === 0) {
       return;
@@ -45,7 +58,7 @@ export default function Present(props) {
       let manytext = false;
       let manybullet;
       let curslide = (
-        <div >
+        <div style={{padding: "20px", marginBottom: "20px"}}>
           <Preview>
             <Presentation>
               <Slide >
@@ -63,13 +76,6 @@ export default function Present(props) {
                 <Text style={{ x: 1, y: 1, w: 7, h: 0.5, fontSize: 14 }}>
                   {findchile()}
                 </Text>
-                <Shape
-                  type="rect"
-                  style={{
-                    x: 0, y: 0, w: 10, h: 0.01,
-                    backgroundColor: "black"
-                  }}
-                />
               </Slide>
             </Presentation>
           </Preview>
@@ -103,7 +109,7 @@ export default function Present(props) {
       slidearray.push(curslide);
       if (manytext) {
         slidearray.push(
-          <div>
+          <div style={{padding: "20px", marginBottom: "20px"}}>
             <Preview>
               <Presentation>
                 <Slide>
@@ -121,13 +127,6 @@ export default function Present(props) {
                   <Text style={{ x: 1, y: 1, w: 7, h: 0.5, fontSize: 14 }}>
                     <Text.Bullet>{manytext}</Text.Bullet>
                   </Text>
-                  <Shape
-                    type="rect"
-                    style={{
-                      x: 0, y: 0, w: 10, h: 0.01,
-                      backgroundColor: "black"
-                    }}
-                  />
                 </Slide>
               </Presentation>
             </Preview>
@@ -136,7 +135,7 @@ export default function Present(props) {
       }
       if (manybullet) {
         slidearray.push(
-          <div>
+          <div style={{padding: "20px", marginBottom: "20px"}}>
             <Preview>
               <Presentation>
                 <Slide>
@@ -156,13 +155,6 @@ export default function Present(props) {
                       <Text.Bullet key={n}>{n}</Text.Bullet>
                     ))}
                   </Text>
-                  <Shape
-                    type="rect"
-                    style={{
-                      x: 0, y: 0, w: 10, h: 0.01,
-                      backgroundColor: "black"
-                    }}
-                  />
                 </Slide>
               </Presentation>
             </Preview>
@@ -194,15 +186,10 @@ export default function Present(props) {
     lada[0] = createRef()
   }
 
-
-
   return (
-    <div>
-      <div onClick={prevslide} className="Back-button"/>
-      <div onClick={nextslide} className="Next-button"/>
-      <div>
-        
-        <div ref={topic}>
+    <div className="Fullpage">
+      <div className="Overview">
+        <div  onClick={() => Topage("topic")} style={{padding: "20px", marginBottom: "20px"}}>
           <Preview>
             <Presentation>
               <Slide>
@@ -222,14 +209,40 @@ export default function Present(props) {
             </Presentation>
           </Preview>
         </div>
-        <div>
-          {slidearray.map((x, i) => (
-            <div ref={temp[i]}>
-              {x}
-            </div>
-          ))}
-        </div>
+        {slidearray.map((x, i) => (
+          <div className="Topage-button" onClick={() => Topage(i)} >
+            {x}
+          </div>
+        ))}
       </div>
+    
+    <div className="Mainslide">
+      <div ref={topic} style={{padding: "20px", marginBottom: "20px"}}>
+        <Preview>
+          <Presentation>
+            <Slide>
+              <Text
+                style={{
+                  x: 2.5,
+                  y: 2.5,
+                  w: 5,
+                  color: "#363636",
+                  fill: { color: "F1F1F1" },
+                  align: "center",
+                }}
+              >
+                {data.Root.topic}
+              </Text>
+            </Slide>
+          </Presentation>
+        </Preview>
+      </div>
+      {slidearray.map((x, i) => (
+        <div ref={temp[i]}>
+          {x}
+        </div>
+      ))}
+    </div>
     </div>
   );
 }

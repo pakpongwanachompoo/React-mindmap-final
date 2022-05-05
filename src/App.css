@@ -21,8 +21,51 @@
 
 .Back-button {
   position: fixed;
-  bottom: 1;
+  top: 1;
   width: 50%;
   height: 100%;
   z-index: 1;
+}
+
+.Topage-button {
+  z-index: 2;
+}
+
+.Fullpage{
+  height: 100%;
+  width: 100%; 
+  position: absolute;
+  background-color: #C0C0C0;
+}
+
+.Fullscreen-button{
+  position: fixed;
+  width: 70px;
+  height: 40px;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+.Overview{
+  position: fixed;
+  display: inline-block;
+  overflow-y: auto;
+  text-align:justify;
+  width: 30%;
+  height: 100%;
+  padding: 10px;
+  background-color: #DCDCDC;
+}
+
+.Mainslide{
+  position: absolute;
+  display: inline-block;
+  text-align:justify;
+  top: 10%;
+  left: 30%;
+  width: 70%;
+  scroll-behavior: smooth;
+  padding: 20px;
+  background-color: #C0C0C0;
 }
