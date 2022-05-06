@@ -13,33 +13,6 @@ export default function Previewmode(props) {
 
     const topic = useRef(null)  
 
-    const prevslide = async () => {
-        if (k <= 0) {
-        window.scrollTo({
-            top: topic.current.offsetTop,
-        })
-        } else {
-        k--
-        window.scrollTo({
-            top: temp[k].current.offsetTop,
-        })
-        
-        console.log(k)
-        }
-    }
-
-    const nextslide = () => {
-        if (k >= slidearray.length) {
-        return
-        } else {
-        window.scrollTo({
-            top: temp[k].current.offsetTop,
-        })
-        k++
-        console.log(k)
-        }
-    }
-
     const Topage = (page) => {
         if(page == "topic"){
         window.scrollTo({

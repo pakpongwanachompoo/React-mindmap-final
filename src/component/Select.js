@@ -48,10 +48,36 @@ export default function Select(props) {
         for (let j = 0; j < Allnode.length; j++) {
           if (next === Allnode[j].key) {
             //text is more than 800
+            pres.defineSlideMaster({
+              title: "PLACEHOLDER_SLIDE",
+              background: { color: "FFFFFF" },
+              objects: [
+                {
+                  placeholder: {
+                    options: {
+                      name: "body",
+                      type: "body",
+                      x: 1.5,
+                      y: 1.0,
+                      w: 12,
+                      h: 5.25,
+                      fontSize: 18,
+                      color: "363636",
+                      align: pres.AlignH.left,
+                      bullet: true,
+                      softBreakBefore: true,
+                    },
+      
+                    text: "(custom placeholder text!)",
+                  },
+                },
+              ],
+            });
             if (Allnode[j].topic.length > 800) {
               text.push(Allnode[j].topic.replaceAll("\n", "").substring(800));
+              
               // create another slide to add text
-              let subslide = pres.addSlide();
+              let subslide = pres.addSlide({ masterName: "PLACEHOLDER_SLIDE" });
               subslide.addText(cur.topic + "(ต่อ)", {
                 x: 1.5,
                 y: 0.5,
@@ -60,12 +86,12 @@ export default function Select(props) {
                 color: "363636",
                 align: pres.AlignH.top,
               });
-              subslide.addText(text.toString().replaceAll(",", "\n"), {
-                x: 1.5,
-                y: 2.5,
-                color: "363636",
-                align: pres.AlignH.left,
-                softBreakBefore: true,
+              subslide.addText(
+                text
+                .toString()
+                .replaceAll(",", "\n"), 
+                {
+                placeholder: "body"
               });
 
               text = [];
@@ -143,6 +169,7 @@ export default function Select(props) {
         );
       }
     }
+    
   };
 
   const [checkedState, setCheckedState] = useState(
@@ -189,7 +216,7 @@ export default function Select(props) {
       <h2>{Root.topic}</h2>
         {checklist.map((topic, index) => {
           return (
-            <div style={{textAlign: "justify", paddingLeft: "35%"}} key={index}>
+            <div className="Listbox-select" key={index}>
               <div className="toppings-list-item">
                 <div className="left-section">
                   <input
@@ -206,8 +233,8 @@ export default function Select(props) {
             </div>
           );
         })}
-      <div style={{display: "flex", justifyContent: "space-between", paddingLeft: "40%", paddingRight: "40%", marginTop: "30px"}}>
-        <button onClick={exportsecelcslide}>Export</button>
+      <div className="Select-button">
+        <button className="button" onClick={exportsecelcslide}>Export</button>
         <Link
           to="/Previewmode"
           target="_blank"
@@ -220,7 +247,7 @@ export default function Select(props) {
           }
           state={{ Root: Root, Allnode: Allnode }}
         >
-          <button onClick={previewslide}>Preview</button>
+          <button className="button" onClick={previewslide}>Preview</button>
         </Link>
       </div>
     </div>
