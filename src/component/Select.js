@@ -184,13 +184,12 @@ export default function Select(props) {
   };
 
   return (
-    <div>
+    <div style={{textAlign:"center", fontSize: "20px", }}>
       <h1>Select export slide</h1>
       <h2>{Root.topic}</h2>
-      <ul className="slide-list">
         {checklist.map((topic, index) => {
           return (
-            <li key={index}>
+            <div style={{textAlign: "justify", paddingLeft: "35%"}} key={index}>
               <div className="toppings-list-item">
                 <div className="left-section">
                   <input
@@ -204,19 +203,18 @@ export default function Select(props) {
                   <label htmlFor={`custom-checkbox-${index}`}>{topic}</label>
                 </div>
               </div>
-            </li>
+            </div>
           );
         })}
-      </ul>
-      <div>
+      <div style={{display: "flex", justifyContent: "space-between", paddingLeft: "40%", paddingRight: "40%", marginTop: "30px"}}>
         <button onClick={exportsecelcslide}>Export</button>
         <Link
-          to="/present"
+          to="/Previewmode"
           target="_blank"
           rel="noopener noreferrer"
           onClick={() =>
             localStorage.setItem(
-              "present",
+              "Previewmode",
               JSON.stringify({ Root: Root, Allnode: Allnode })
             )
           }
